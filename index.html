@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIYHavem</title>
+    <link href=""css/page.css" rel=""stylesheet" type=""text/css" media=""all">
+
+
+</head>
+
+
+<style>
+
+    .body {
+        background-color: rgb(219, 199, 175);
+    }
+
+    .wrapper{
+        max-height:120px;
+        border:1px solid #ddd;
+        display: flex;
+        overflow-y: auto;
+        width: 750px;
+        gap: 15px; 
+        padding:10px;
+
+    }
+
+    .wrapper::-webkit-scrollbar{
+        width: 0;
+        display: none;
+    }
+
+
+
+    .wrapper .produkt{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+        min-width: 110px; 
+        height:110px;
+        line-height: 210px;
+        text-align:center;
+        background-color: rgb(163, 141, 173);
+    }
+
+    .wrapper .produkt .img {
+        height: 5%;
+        width: auto;
+        object-fit: contain;
+    }
+
+     .wrapper .tutorials{
+        width: 110px; 
+        height:110px;
+        line-height: 110px;
+        text-align:center;
+        background-color: rgb(36, 65, 65);
+    }
+
+    .searchbar{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+
+    }
+
+    .searchbar .body {
+
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #e2cece91;
+        
+    }
+
+    .searchbar .container{
+        display: flex;
+        align-items: center;
+        background: #886e6e;
+        padding: 5px;
+        width: 300px;
+        height:50px;
+        border-radius:50px;
+        box-shadow:  1px 1px 5px #cc9393;
+        margin: 10px;
+        position: relative;
+        transition: width 1.5s;
+
+    }
+
+    .searchbar .input{
+        margin: 10px 50px;
+        width:100%;
+        color:#916477;
+        border: none;
+        background: transparent;
+        outline: none;
+        transition-delay: 0.5s;
+
+    }
+
+    .searchbar .magnifier {
+        position: absolute;
+        left: 15px;
+        width: 25px;
+        text-align: center;
+        margin: 0 auto;
+        cursor: pointer;
+        color: #79262691
+
+    }
+
+    .searchbar .mic-icon {
+        right: 20px;
+        width: 30px;
+        transition: width 0.4s;
+        color: #36383d;
+
+    }
+
+    .container {
+        color:#36383d;
+    }
+
+
+
+    .container .button{
+        position: absolute;
+        top: -50px;
+        left: 0px;
+        right: 0px;
+        background-color: #cc9393;
+        border: #886e6e;
+        
+
+
+    }
+
+    /* 1. STYLING AV SELVE NETTSIDEN & KNAPPEN */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .handlekurv-knapp {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #c5a4bd;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+    /* 2. STYLING AV SIDE-VINDUET (THE SLIDE-IN CART) */
+    .side-vindu {
+        position: fixed;
+        top: 0;
+        right: -350px; /* Gjemmer vinduet 350px på utsiden av høyre skjermkant */
+        width: 300px;
+        height: 100%;
+        background-color: #f8f9fa;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+        padding: 25px;
+        
+        /* Dette er magien som gjør at det sklir glatt (0.4 sekunder animasjon) */
+        transition: right 0.4s ease; 
+    }
+
+    /* 3. EN KLASSE SOM FLYTTER VINDUET INN IGJEN */
+    .side-vindu.aktiv {
+        right: 0; /* Flytter vinduet helt inn til høyre kant av skjermen */
+    }
+
+    .lukk-knapp {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        float: right;
+    }
+
+    /* Base-styling for hamburger-knappen */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* De tre linjene i hamburgeren */
+.hamburger span {
+  width: 100%;
+  height: 3px;
+  background-color: #333;
+  transition: all 0.3s ease;
+}
+
+/* Styling for selve menyen (skjult til venstre som standard) */
+.nav-meny {
+  position: fixed;
+  top: 0;
+  left: -100%; /* Gjemmer menyen utenfor skjermen */
+  width: 250px;
+  height: 100vh;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+  transition: left 0.3s ease; /* Gjøre overgangen glatt */
+  padding-top: 60px;
+}
+
+.nav-meny ul {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-meny li a {
+  display: block;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+}
+
+/* --- AKTIV TILSTAND (Når koden klikkes på) --- */
+
+/* Vis menyen ved å flytte den inn på skjermen */
+.nav-meny.aktiv {
+  left: 0;
+}
+
+/* Animasjon: Gjør hamburgeren om til et 'X'-kryss */
+.hamburger.aktiv span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.aktiv span:nth-child(2) {
+  opacity: 0; /* Skjul den midterste linjen */
+}
+
+.hamburger.aktiv span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+.headercenter {
+    flex-direction:row;
+    flex-wrap:wrap;
+    -ms-flex-align:baseline;
+}
+
+
+
+
+    
+
+
+
+
+
+</style>
+
+
+<body>
+
+
+
+    <div class="layout"></div>
+    <div class="grid-container"></div>
+
+    <!-- HTML: Elementene våre -->
+    <button class="handlekurv-knapp" id="aapneKurv">🛒 Vis handlekurv</button>
+
+    <div class="side-vindu" id="handlekurvVindu">
+        <button class="lukk-knapp" id="lukkKurv">&times;</button>
+        <h2>Din Handlekurv</h2>
+        <p>Kurven er tom...</p>
+    </div>
+
+    <!-- JAVASCRIPT: Logikken som lytter etter klikk -->
+    <script>
+        // Henter elementene fra HTML-koden over ved hjelp av ID-ene deres
+        const aapneKnapp = document.getElementById('aapneKurv');
+        const lukkKnapp = document.getElementById('lukkKurv');
+        const kurvVindu = document.getElementById('handlekurvVindu');
+
+        // Når du klikker på handlevogn-knappen, legg til klassen "aktiv" på vinduet
+        aapneKnapp.addEventListener('click', () => {
+            kurvVindu.classList.add('aktiv');
+        });
+
+        // Når du klikker på X-knappen, fjern klassen "aktiv" igjen
+        lukkKnapp.addEventListener('click', () => {
+            kurvVindu.classList.remove('aktiv');
+        });
+    </script>
+
+
+    
+    <!--3.Sign In button-->
+
+    <!--4.Hamburger Menu-->
+
+    <!-- Hamburger-knapp -->
+<button class="hamburger" id="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<!-- Selve menyen -->
+<nav class="nav-meny" id="navMeny">
+  <ul>
+    <li><a href="#">Hjem</a></li>
+    <li><a href="#">Om oss</a></li>
+    <li><a href="#">Tjenester</a></li>
+    <li><a href="#">Kontakt</a></li>
+    <a href="Handlekurv.html" class="item">Handlekurv</a>
+    <li>lukk-knapp</li>
+
+  </ul>
+</nav>
+
+<script>
+    // Hent elementene fra HTML
+const hamburger = document.getElementById('hamburger');
+const navMeny = document.getElementById('navMeny');
+
+// Lytt etter klikk på hamburger-knappen
+hamburger.addEventListener('click', () => {
+  // toggle() legger til klassen hvis den mangler, og fjerner den hvis den finnes
+  hamburger.classList.toggle('aktiv');
+  navMeny.classList.toggle('aktiv');
+});
+
+</script>
+
+  <!--Må flexes-->
+
+    <div class="center" >
+        <div class="headercenter">
+            
+
+            <div class="logo">
+                DIYHaven
+                <label for="menu"></label>
+             </div>
+
+          <div>
+             
+             <a href="SignIn.html" class="item">Signer</a>
+        
+
+            </div>
+
+
+        </div>
+    </div>
+
+    
+    
+
+   
+
+   
+
+    <!--Status, som skal liggsom ha div klasser, det er deler i en nettside som ser ut som maleri vinduer.
+    div classene kan også se ut som header, footer, og main, men de er ikke lik som, fordi.... Videre....-->
+
+    <div class="item1" style="height:115px; background-image:url(); background-size: contain; background-repeat: no-repeat; background-position: center; overflow: hidden;">
+   
+    <img src="Bilder/CamillaTe.gif" style="width:200px; height: 115px"; float:center; padding:7px;>
+     <img src="Bilder/AmbientTerrase.gif" style="width:523px; height:115px" >
+    </div>
+
+    <br>
+    <br>
+
+    <img src="Bilder/SearchBar.jpg" style="width: 170px; font-size: 70px;">
+    <img src="Bilder/MenuSVG.jpg" style="width: 50px;">
+    <img src="Bilder/SearchIcon.jpg" style="width: 40px;">
+
+    <div class="wrapper">
+        <div class="produkt">
+            <img src="/Bilder/Fairy puppy.jpg">
+            <span>Produkt-1</span>
+        </div>
+        <div class="produkt">
+            <img src="/Bilder/spidercat.jpg">
+            <span>Produkt-2</span>
+        </div>
+        <div class="produkt">
+            <img src="/Bilder/Spidercostume.jpg">
+            <span>Produkt-3</span>
+        </div>
+        <div class="produkt">
+            <img src="/Bilder/bachiwawa.jpg">
+            <span>Produkt-4</span>
+        </div>
+        <div class="produkt">
+             <img src="/Bilder/CaperucitaGata.jpg">
+            <span>Produkt-5</span>
+        </div>
+        <div class="produkt"> 
+            <img src="/Bilder/chibrrbrr.jpg">
+            <span>Produkt-6</span>
+        </div>
+    </div>
+
+     <div class="wrapper">
+        <div class="tutorials">box-1</div>
+        <div class="tutorials">box-2</div>
+        <div class="tutorials">box-3</div>
+        <div class="tutorials">box-4</div>
+        <div class="tutorials">box-5</div>
+        <div class="tutorials">box-6</div>
+    </div>
+
+    joijoij
+
+    <section class="flex items-center">
+
+   
+    <section class="flex justify-center">
+
+         <!--left and right padding-->
+        <!--left: Menu burger-->
+        klkpok
+    
+        
+        <section class="flex items-center py-2 justify-between w-full px-4 sm:px-[30px] lg:px-4 xl: px-10 transition-opacity ease-linear max-w-[1400px]">
+            <!--spøre AI-->
+            <nav class="hidden lg:block px-5 lg:px-0 static md:relative">
+            </nav>
+            <a class="z-10 absolute top-3 left-1/2 -translate-x-1/2" href="/">
+            </a>
+            ijjoij
+            <section class="absolute inset-0 flex justify-center items-center opacity-0 -z-50 transition-opacity ease-linear h-full">
+                <div class="flex gap-2 max-w-[296px] xl:max-w-[460px] mx-auto flex-1 z-50">
+                    <!--This div class helps with...-->
+                    <div class>
+                        <!--this div class does...-->
+                        <div class="body"> 
+                        <div class="searchbar">
+                            <div class="rounded-[10px] relative w-full cursor-default overflow hidden bg-white text-left sm:text-sm md:shadow-[0px_0px_13px_0px_rgba(255,255,255,0.50)]">
+
+                                <label for="search input" class="absolute left-4 2xl:left-3 top-[52%] - translate-y-[59%]">
+                                    <svg class="w-4 md:w-5 h-4 md:h-5" width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="" img src="Bilder/SearchIcon.jpg">
+                                        <path d="" fil="currentColor"></path>
+                                    </svg>
+
+                                </label>
+                                <input placeholder="Search" class="rounded-[10px] border-gray-50 lg: :border-secondary w-full focus:border-hover border-2 border-solid py-2 px-10 text-base text-base text-seondary font-bold placeholder:text-secondary placeholder:font-bold outline-none" id="search-input" role="combobox" type="text" aria-expanded="false" aria-autocomplete="list" data-headlessui-statevalue>
+
+
+                                <div class="container"></div>
+                                <div class="input"></div>
+                                <div class="magnifier"></div>
+                                <div class="mic-icon"></div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                    uihiuhj
+                </div>
+            </section>
+        </section>       
+    </section>
+    </div>
+
+    <!--right: Shop cart & search-->
+    <div>
+
+
+    </div>
+
+    <!--center div title & padding-->
+    <div>
+        <img src=""; ahref="index.html">
+    </div>
+
+    </section>
+
+   
+    
+    <!--Header-->
+
+    <div class="item2">
+
+       
+
+
+
+    </div>
+
+    <!--sidebar 1-->
+
+    <div class="item3">
+
+
+    </div>
+
+    <!--sidebar 2-->
+
+    <div class="item4">
+
+
+    </div>
+
+    <!--main div test-->
+
+    <div class="item5">
+
+        <div class>
+            <h2 class="font-extrabold text-center">New on Sale</h2>
+            <p class=""></p>
+
+        </div>
+
+        <div class="">
+            <section class="">
+                <a class="flex group" href="">
+                    <section class="">
+                        <figure class="">
+                            <!--Notice that the button changes size and moves when I change the window size. Figure if that's because of the script or if it normally does that.-->
+                            <button class="Produkt1Knapp" style="background-color: rgb(66, 87, 87); font-size: 47%; border-radius:0%; width: 76% "
+                                aria-label="Save item">
+                                <img alt="product item" fetchpriority="" loading="" width="260" height="230" decoding="async" data-nimg="1" class="" srcset="" src="Bilder/ProductCamera.gif" style="color:transparent;">
+                                <img alt="product item" fetchpriority="" loading="" width="260" height="230" decoding="async" data-nimg="1" class="" srcset="" src="" style="color:transparent;">
+                            
+                                
+                                <svg xmlns="">
+                                    <path d="">
+
+                                    </path>
+                                </svg>
+                            </button>
+                            
+                            
+                            
+
+                        </figure>
+                        <p class="">Produkt 1</p>
+                        <p class="">239,90.kr</p>
+
+                    </section>
+                </a>
+                <a class="flex group" href="">
+                    <section class="">
+                        <figure class="">
+                            <button class=""style="background-color: rgb(66, 87, 87); font-size: 15%; border-radius: 5%; width: 16% ">
+                                <img alt="product item" fetchpriority="" loading="" width="260" height="230"decoding="async" data-nimg="1" class="" srcset="" src="Bilder/CoffeeMachine.jpg" style="color:transparent;">
+                                <img alt="product item" fetchpriority="" loading="" width="344" height="344" decoding="async" data-nimg="1" class="" srcset="" src="" style="color:transparent;">
+                            
+                                <svg xmlns="">
+                                    <path d="">
+                                        
+                                    </path>
+                                </svg>
+                            </button>
+
+                        </figure>
+                        <p class="">Produkt 2</p>
+                        <p class="">380kr</p>
+
+                    </section>
+                </a>
+                <a class="flex group" href="">
+                    <section class="">
+                        <figure class="">
+                            <button class="" style="background-color: rgb(66, 87, 87); font-size: 15%; border-radius: 5%; width: 16%">
+                                <img alt="product item" fetchpriority="" loading="" width="260" height="230" decoding="async" data-nimg="1" class="" srcset="" src="Bilder/Anime reading book.jpg" style="color:transparent;">
+                                <img alt="product item" fetchpriority="" loading="" width="260" height="230" decoding="async" data-nimg="1" class="" srcset="" src="" style="color:transparent;">
+                            
+                                <svg xmlns="">
+                                    <path d="">
+                                        
+                                    </path>
+                                </svg>
+                            </button>
+
+                        </figure>
+                        <p class="">Produkt 3</p>
+                        <p class="">259</p>
+
+                    </section>
+                </a>
+                <a class="flex group" href="">
+                    <section class="">
+                        <figure class="">
+                            <button class="" style="background-color: rgb(66, 87, 87); font-size: 15%; border-radius: 5%; width: 16%">
+                                <img alt="product item" fetchpriority="" loading="" width="260" height="230" decoding="async" data-nimg="1" class="" srcset="" src="Bilder/IPod.gif" style="color:transparent;">
+                                <img alt="product item" fetchpriority="" loading="" width="344" height="344" decoding="async" data-nimg="1" class="" srcset="" src="" style="color:transparent;">
+                            
+                                <svg xmlns="">
+                                    <path d="">
+                                        
+                                    </path>
+                                </svg>
+                            </button>
+
+                        </figure>
+                        <p class="">Produkt 4</p>
+                        <p class="">150kr
+                            <span class="ml-1 text-[0.7em] font-semibold opacity-75 align-baseline">kr</span>
+                        </p>
+
+                    </section>
+                </a>
+
+            </section>
+            <a class=""></a>
+        </div>
+
+        <div class="Tutorial main">
+
+            <ahref="https://ilove-crochet.com/crochet-easy-sakura-flower/?fbclid=IwAR0fdkgxBKhf3S3vLy1FkFHDyhB5q7dFsjhnMsWC-DljmiPg2BJn3ZrpB4s&utm_source=Pinterest&utm_medium=organic"></ahref>
+            <ahref=""
+
+
+        </div>
+
+        <!--Hva gjor <hr>?-->
+            <!--Ok, <hr> skal er liggsom strekklinjen for a vise 
+            divisjon i tekst, bilder, digital 'page', osv.-->
+            <hr>
+
+        <div>
+
+        </div>
+
+        <!--Hva gjor en <marquee>?-->
+         <!--En <marquee> skal..., med 'direction', retter vi marquee til en side, og ''...-->
+         <!--Forklarer ikke definisjon her, men fra nettside sa ser det nesten ut som tittel klistemerke, 
+         det tillatter gif (tror det skal gjore sa i andre img.src utafor marquee(?).-->
+         
+         <!--A NEI DA! Det er egentlig en animert side som flytter elementer
+         i en bestemt retning med 'direction' automatisk. 
+         Det er kult som, som Powerpoint nesten.
+          Tror jeg vil bruke det for sidebar istedenfor, 
+         men forst ma jeg skjekke vis jeg ma installere for a fa <marquee> til a funke.-->
+        <marquee direction="right"></marquee>
+
+        <table>
+
+        </table>
+
+        <div>
+
+        </div>
+
+    </div>
+
+    
+
+    <!--footer-->
+
+
+     <!--in this footer code(that I'm kinda copying 
+     for testing) it seems like it's technically 
+     possesing a text with a a href between it, BUT!,
+     'problem' is that, ...or maybe I can just fix the 
+     code with a <br> code, to separate in lines the 
+     links and texts, and apply another div inside to 
+     box other elements separately somewhere
+      (applying scrolllbar if box little, tiny, something(br).)-->
+
+    <div class="item6" align="center">
+
+        <!--where's the align dictionary again? 
+        There's probably a small number in this category though, 
+        like in flexbox...:| -->
+
+        "vnjkfnrek" <a href>Main Home Site</a> "ncjksdnfelkjr"
+
+        <div>
+            <!--Test div container to see space fit and 
+            test putting in a small swipe scroller function/bar.
+            Also to add creative elements and to...
+            add any bar menu, idk....uggghhh-->
+
+            <img src="Bilder/VåtHøstBlader.gif" style="width:650px; height:125px">
+
+
+
+        </div>
+
+        <div>
+            <!--Test Div Container 2-->
+
+        </div>
+
+    </div>
+
+
+    <header>
+
+
+
+        <nav>
+
+        </nav>
+
+        <nav>
+
+
+        </nav>
+
+        <nav>
+
+
+        </nav>
+
+       
+
+
+
+    </header>
+
+    <main>
+        <section>
+
+        </section>
+
+        <article>
+
+        </article>
+
+        <article>
+
+
+        </article>
+
+    </main>
+
+    <footer>
+
+
+    </footer>
+    
+</body>
+</html>
+
+<!--for ...-->
+<div class="relative">
+    <button class="group hidden min-[577px]:flex ite ms-center gap-1 p-3 hover:bg-grey-100 transition-color" id="" type="button" aria-haspopup="listbox" aria-expanded="true" data-headlessui-state="open" aria-controls="headlessui-listbox-option-:re:">
+        <span class="">
+            "kr"
+            "kr"
+
+        </span>
+        <span class="[&>svg]:w-[18px] [&>svg]:h-3">
+
+        </span>
+    </button> 
+</div>
+
+<!--1.Currency choice menu-->
+
+<!--Note: ul role="" has many choices, explore them and test to see how they look like.-->
+
+<ul class="absolute right-0 z-[60] mt-1 max-h-80 w-56 overflow-auto bg-grey border-2 border-black shadow-lg focus:outline-none [scrollbar-width:thin] [scrollbar-color:rgba(113,114,117,0.5)_transparent] [&: :-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[rgba(113,114,117,0.5)] [&::-webkit-scrollbar-button]:hidden" arialabelledby="headlessui-listbox-button-:r2:" aria-orientation="vertical" id="headlessio-listbox-options-:re:" role="listbox" tabindex="0" data-headlessui-state="open">
+    <li class="cursor-pointer select-none px-6 py-3 text-sm font-bold tracking-wide transition-colors bg-multi-base text-white" id="headlessui-listbox-option-:rf:" role="option" tabindex="-1" aria-selected="true" data-headlessui-state="selected">
+        <div class="flex items-center justify-between gap-3 w-full">
+            <span>Norway</span>
+            <span class="shrink-0 transition-opcaity opacity-100">Kr</span>
+        </div>
+    </li>
+</ul>
+
+
+
+
